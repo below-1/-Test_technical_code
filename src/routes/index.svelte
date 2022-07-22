@@ -1,0 +1,94 @@
+<script>
+	import { fire } from '$lib/fire';
+
+	let number = 1;
+	let items = [];
+
+	function validate_number(x) {
+		if (x <= 0) {
+			return 'harus lebih besar dari 0'
+		}
+		if (isNaN(x)) {
+			return 'harus angka'
+		}
+		return null;
+	}
+	$: number_err = validate_number(number);
+
+	async function getTriangle() {
+		try {
+			const { data, response } = await fire('/api/triangles', { number })			
+			if (!response.ok) {
+				alert('terjadi kesalahan')
+				return
+			}
+			items = data.items
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
+	async function getOdds() {
+		try {
+			const { data, response } = await fire('/api/odds', { number })			
+			if (!response.ok) {
+				alert('terjadi kesalahan')
+				return
+			}
+			items = data.items
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
+	async function getPrimes() {
+		try {
+			const { data, response } = await fire('/api/primes', { number })			
+			if (!response.ok) {
+				alert('terjadi kesalahan')
+				return
+			}
+			items = data.items
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
+</script>
+<svelte:head>
+	<title>Home</title>
+	<meta name="description" content="Svelte demo app" />
+</svelte:head>
+
+<section>
+	<div style="display: flex; flex-direction: column;">
+		<input 
+			type="number"
+			min={1}
+			bind:value={number}
+		/>
+		{#if number_err}
+			<small style="color: red">{number_err}</small>
+		{/if}
+		<div>
+			<button 
+				on:click={getTriangle}
+				type="button">generate segitiga</button>
+			<button 
+				on:click={getOdds}
+				type="button">generate bilangan ganjil</button>
+			<button 
+				on:click={getPrimes}
+				type="button">generate bilangan prima</button>
+		</div>
+		{#if items && items.length}
+			<div>
+				{#each items as it}
+					<strong>{it}</strong>
+					<br/>
+				{/each}
+			</div>
+		{/if}
+	</div>
+
+</section>
