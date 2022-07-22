@@ -16,6 +16,7 @@
 	$: number_err = validate_number(number);
 
 	async function getTriangle() {
+		if (number_err) return;
 		try {
 			const { data, response } = await fire('/api/triangles', { number })			
 			if (!response.ok) {
@@ -29,6 +30,7 @@
 	}
 
 	async function getOdds() {
+		if (number_err) return;
 		try {
 			const { data, response } = await fire('/api/odds', { number })			
 			if (!response.ok) {
@@ -42,6 +44,7 @@
 	}
 
 	async function getPrimes() {
+		if (number_err) return;
 		try {
 			const { data, response } = await fire('/api/primes', { number })			
 			if (!response.ok) {
