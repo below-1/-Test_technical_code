@@ -1,4 +1,5 @@
 <script>
+	import VirtualList from 'svelte-tiny-virtual-list';
 	import { fire } from '$lib/fire';
 
 	let number = 1;
@@ -84,13 +85,23 @@
 				on:click={getPrimes}
 				type="button">generate bilangan prima</button>
 		</div>
+		
 		{#if items && items.length}
-			<div>
+			<VirtualList
+				width="100%"
+				height={600}
+				itemCount={items.length}
+				itemSize={50}>
+			<div slot="item" let:index let:style {style}>
+				{items[index]}
+			</div>
+		</VirtualList>
+			<!-- <div>
 				{#each items as it}
 					<strong>{it}</strong>
 					<br/>
 				{/each}
-			</div>
+			</div> -->
 		{/if}
 	</div>
 
